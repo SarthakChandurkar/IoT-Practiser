@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT PRACTISER</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Heading style */
+    #mainHeading {
+      text-align: center;
+      font-weight: bold;
+      font-size: 2.5em;
+      margin: 20px 0;
+      color: #2c3e50;
+    }
+    /* Filter Section */
+    #filterSection {
+      width: 95%;
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 10px;
+      border: 2px solid #2980b9;
+      border-radius: 8px;
+      background-color: #ecf0f1;
+    }
+    .filter-group {
+      margin-bottom: 15px;
+    }
+    .filter-group .group-label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .filter-buttons {
+      margin-top: 15px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 1em;
+      background-color: #2980b9;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #1f6391;
+    }
+    /* Timer (for Quiz mode) */
+    #timer {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    /* Main content area */
+    #quizSection {
+      width: 95%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .question-block {
+      border-bottom: 1px solid #bdc3c7;
+      padding: 15px 0;
+    }
+    .question-block p {
+      margin: 10px 0;
+    }
+    /* Answer container: input and submit button on one line */
+    .answer-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    #finalScore {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Heading -->
+  <h1 id="mainHeading">IoT PRACTISER</h1>
+
+  <!-- Filter Section -->
+  <div id="filterSection">
+    <form id="filterForm">
+      <!-- Week Filter -->
+      <div class="filter-group" id="weekFilterGroup">
+        <span class="group-label">Filter by Week:</span>
+        <div class="checkbox-group" id="weekCheckboxes">
+          <!-- Only the "All Weeks" checkbox is checked by default -->
+          <label><input type="checkbox" name="week" value="all" id="weekAll" checked> All Weeks</label>
+          <label><input type="checkbox" name="week" value="1"> Week 1</label>
+          <label><input type="checkbox" name="week" value="2"> Week 2</label>
+          <label><input type="checkbox" name="week" value="3"> Week 3</label>
+          <label><input type="checkbox" name="week" value="4"> Week 4</label>
+          <label><input type="checkbox" name="week" value="5"> Week 5</label>
+          <label><input type="checkbox" name="week" value="6"> Week 6</label>
+          <label><input type="checkbox" name="week" value="7"> Week 7</label>
+          <label><input type="checkbox" name="week" value="8"> Week 8</label>
+          <label><input type="checkbox" name="week" value="9"> Week 9</label>
+          <label><input type="checkbox" name="week" value="10"> Week 10</label>
+          <label><input type="checkbox" name="week" value="11"> Week 11</label>
+          <label><input type="checkbox" name="week" value="12"> Week 12</label>
+        </div>
+      </div>
+      <!-- Topic Filter -->
+      <div class="filter-group" id="topicFilterGroup">
+        <span class="group-label">Filter by Topic:</span>
+        <div class="checkbox-group" id="topicCheckboxes">
+          <!-- Only the "All Topics" checkbox is checked by default -->
+          <label><input type="checkbox" name="topic" value="all" id="topicAll" checked> All Topics</label>
+          <!-- Topics will be loaded from topics.txt -->
+        </div>
+      </div>
+      <!-- Importance Filter (all checked by default) -->
+      <div class="filter-group" id="importanceFilterGroup">
+        <span class="group-label">Filter by Importance:</span>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="importance" value="all" id="importanceAll" checked> All</label>
+          <label><input type="checkbox" name="importance" value="important"> Important Only</label>
+          <label><input type="checkbox" name="importance" value="notImportant"> Non Important Only</label>
+        </div>
+      </div>
+      <!-- Two buttons for functionalities -->
+      <div class="filter-buttons">
+        <button type="button" id="quizButton">Quiz</button>
+        <button type="button" id="applyButton">Apply Filters</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Timer display (only for Quiz mode) -->
+  <div id="timer"></div>
+
+  <!-- Main Section to display output -->
+  <div id="quizSection"></div>
+  <div id="finalScore"></div>
+
+  <!-- Data file with questions -->
+  <script src="data.js"></script>
+
+  <!-- Main JavaScript -->
+  <script>
+    let score = 0;
+    let totalQuestions = 0;
+    let quizTimerInterval = null; // Store the quiz timer interval
+
+    // --- Fuzzy Matching Functions ---
+    // Normalize string: convert to lowercase, remove common stop words, split into words, sort, and rejoin.
+    function normalizedString(str) {
+      const stopWords = ['a', 'an', 'the'];
+      return str
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(word => !stopWords.includes(word))
+        .sort()
+        .join(' ');
+    }
+
+    // Compute the Levenshtein distance between two strings.
+    function levenshtein(a, b) {
+      const matrix = [];
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+      
+      for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+      }
+      for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+      }
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1, // substitution
+              matrix[i][j - 1] + 1,     // insertion
+              matrix[i - 1][j] + 1      // deletion
+            );
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    // Fuzzy match using a similarity ratio based on Levenshtein distance.
+    function fuzzyMatch(userAnswer, correctAnswer, threshold = 0.6) {
+      const normalizedUser = normalizedString(userAnswer);
+      const normalizedCorrect = normalizedString(correctAnswer);
+      const distance = levenshtein(normalizedUser, normalizedCorrect);
+      const maxLen = Math.max(normalizedUser.length, normalizedCorrect.length);
+      const similarity = maxLen === 0 ? 1 : (maxLen - distance) / maxLen;
+      return similarity >= threshold;
+    }
+
+    // Check the answer using fuzzy matching.
+    function checkAnswer(qIndex, correctAnswer) {
+      const answerInput = document.getElementById('answer-' + qIndex);
+      const userAnswer = answerInput.value.trim();
+      const resultPara = document.getElementById('result-' + qIndex);
+      if (fuzzyMatch(userAnswer, correctAnswer)) {
+        resultPara.textContent = 'Correct!';
+        resultPara.style.color = 'green';
+        score++;
+      } else {
+        resultPara.textContent = 'Incorrect! Correct answer: ' + correctAnswer;
+        resultPara.style.color = 'red';
+      }
+    }
+    // --- End Fuzzy Matching Functions ---
+
+    // Timer functions for Quiz mode.
+    function startQuizTimer(duration) {
+      const timerDisplay = document.getElementById('timer');
+      let timeLeft = duration;
+      timerDisplay.textContent = formatTime(timeLeft);
+      quizTimerInterval = setInterval(function() {
+        timeLeft--;
+        timerDisplay.textContent = formatTime(timeLeft);
+        if (timeLeft <= 0) {
+          clearInterval(quizTimerInterval);
+          quizTimerInterval = null;
+          showFinalScore();
+        }
+      }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return minutes + ":" + (secs < 10 ? "0" + secs : secs);
+    }
+
+    // When DOM is ready, load topics and setup event listeners.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load topics from topics.txt
+      fetch('topics.txt')
+        .then(response => response.text())
+        .then(text => {
+          const topics = text.split('\n').map(line => line.trim()).filter(line => line !== '');
+          const topicContainer = document.getElementById('topicCheckboxes');
+          topics.forEach(topic => {
+            const label = document.createElement('label');
+            label.innerHTML = `<input type="checkbox" name="topic" value="${topic}"> ${topic}`;
+            topicContainer.appendChild(label);
+          });
+        })
+        .catch(error => console.error('Error loading topics:', error));
+
+      // Setup "Select All" functionality for Week and Topic filters.
+      setupSelectAll('week', 'weekAll');
+      setupSelectAll('topic', 'topicAll');
+
+      // Attach event listeners for the two buttons.
+      document.getElementById('quizButton').addEventListener('click', generateQuiz);
+      document.getElementById('applyButton').addEventListener('click', generateApplyFilters);
+    });
+
+    // Setup "Select All" behavior for a given group.
+    function setupSelectAll(groupName, allCheckboxId) {
+      const allCheckbox = document.getElementById(allCheckboxId);
+      const groupCheckboxes = Array.from(document.querySelectorAll('input[name="' + groupName + '"]')).filter(cb => cb.id !== allCheckboxId);
+      allCheckbox.addEventListener('change', function() {
+        groupCheckboxes.forEach(cb => { cb.checked = allCheckbox.checked; });
+      });
+      groupCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+          if (!cb.checked) {
+            allCheckbox.checked = false;
+          } else {
+            if (groupCheckboxes.every(x => x.checked)) {
+              allCheckbox.checked = true;
+            }
+          }
+        });
+      });
+    }
+
+    // Helper: Get values of checked checkboxes for a given group.
+    function getCheckedValues(groupName) {
+      const checkboxes = document.querySelectorAll('input[name="' + groupName + '"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    // Generate Quiz mode:
+    // If Importance filter is set to "All" (the default), then from the filtered data we select 15 random important and 5 random not‑important questions.
+    // Otherwise, use the filtered data as is.
+    function generateQuiz() {
+      // Clear any previous timer.
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+      score = 0;
+      totalQuestions = 0;
+      const quizSection = document.getElementById('quizSection');
+      quizSection.innerHTML = '';
+      document.getElementById('finalScore').innerHTML = '';
+      document.getElementById('timer').textContent = '';
+
+      const selectedWeeks = getCheckedValues('week');
+      const selectedTopics = getCheckedValues('topic');
+      const selectedImportance = getCheckedValues('importance');
+      let filteredData = data.slice();
+
+      // Apply Week filter.
+      if (!selectedWeeks.includes('all') && selectedWeeks.length > 0) {
+        filteredData = filteredData.filter(item => selectedWeeks.includes(item.week.toString()));
+      }
+      // Apply Topic filter.
+      if (!selectedTopics.includes('all') && selectedTopics.length > 0) {
+        filteredData = filteredData.filter(item => selectedTopics.includes(item.topic));
+      }
+      
+      // Check the Importance filter.
+      // If user left it as "All", then perform the split:
+      if (selectedImportance.includes('all')) {
+        const importantData = filteredData.filter(item => item.important === true);
+        const notImportantData = filteredData.filter(item => item.important === false);
+        const selectedImportant = getRandomQuestions(importantData, 15);
+        const selectedNotImportant = getRandomQuestions(notImportantData, 5);
+        // Combine and shuffle the final list.
+        filteredData = selectedImportant.concat(selectedNotImportant);
+        filteredData = filteredData.sort(() => 0.5 - Math.random());
+      } else if (selectedImportance.length === 1) {
+        if (selectedImportance[0] === 'important') {
+          filteredData = filteredData.filter(item => item.important === true);
+        } else if (selectedImportance[0] === 'notImportant') {
+          filteredData = filteredData.filter(item => item.important === false);
+        }
+      }
+      
+      totalQuestions = filteredData.length;
+      if (totalQuestions === 0) {
+        quizSection.innerHTML = '<p>No questions match the selected filters.</p>';
+        return;
+      }
+
+      // In Quiz mode, we want exactly 20 questions if possible.
+      if (selectedImportance.includes('all') && totalQuestions > 20) {
+        filteredData = filteredData.slice(0, 20);
+        totalQuestions = 20;
+      }
+      
+      // Start the 20‑minute timer (20*60 seconds) only for Quiz mode.
+      startQuizTimer(20 * 60);
+
+      filteredData.forEach((questionObj, index) => {
+        const currentIndex = index; // Capture current index locally.
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question-block');
+
+        const questionText = document.createElement('p');
+        questionText.textContent = (index + 1) + '. ' + questionObj.question;
+        questionDiv.appendChild(questionText);
+
+        const answerInput = document.createElement('input');
+        answerInput.type = 'text';
+        answerInput.id = 'answer-' + currentIndex;
+        answerInput.style.width = '80%';
+        answerInput.style.padding = '5px';
+
+        const submitBtn = document.createElement('button');
+        submitBtn.textContent = 'Submit Answer';
+
+        const answerContainer = document.createElement('div');
+        answerContainer.className = 'answer-container';
+        answerContainer.appendChild(answerInput);
+        answerContainer.appendChild(submitBtn);
+        questionDiv.appendChild(answerContainer);
+
+        submitBtn.addEventListener('click', function() {
+          checkAnswer(currentIndex, questionObj.answer);
+          answerInput.disabled = true;
+          submitBtn.disabled = true;
+        });
+
+        // Display result immediately below the answer container.
+        const resultPara = document.createElement('p');
+        resultPara.id = 'result-' + currentIndex;
+        resultPara.style.fontWeight = 'bold';
+        questionDiv.appendChild(resultPara);
+
+        answerInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (e.shiftKey) {
+              showFinalScore();
+            } else {
+              checkAnswer(currentIndex, questionObj.answer);
+              answerInput.disabled = true;
+              submitBtn.disabled = true;
+            }
+          }
+        });
+
+        quizSection.appendChild(questionDiv);
+      });
+
+      const finalSubmitBtn = document.createElement('button');
+      finalSubmitBtn.textContent = 'Submit Quiz';
+      finalSubmitBtn.style.display = 'block';
+      finalSubmitBtn.style.margin = '20px auto';
+      finalSubmitBtn.addEventListener('click', function() {
+        if (quizTimerInterval) {
+          clearInterval(quizTimerInterval);
+          quizTimerInterval = null;
+        }
+        showFinalScore();
+      });
+      quizSection.appendChild(finalSubmitBtn);
+    }
+
+    // Generate Apply Filters mode: renders ALL filtered questions grouped by week then by topic.
+    function generateApplyFilters() {
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+      document.getElementById('timer').textContent = '';
+      score = 0;
+      totalQuestions = 0;
+      const quizSection = document.getElementById('quizSection');
+      quizSection.innerHTML = '';
+      document.getElementById('finalScore').innerHTML = '';
+
+      const selectedWeeks = getCheckedValues('week');
+      const selectedTopics = getCheckedValues('topic');
+      const selectedImportance = getCheckedValues('importance');
+      let filteredData = data.slice();
+
+      if (!selectedWeeks.includes('all') && selectedWeeks.length > 0) {
+        filteredData = filteredData.filter(item => selectedWeeks.includes(item.week.toString()));
+      }
+      if (!selectedTopics.includes('all') && selectedTopics.length > 0) {
+        filteredData = filteredData.filter(item => selectedTopics.includes(item.topic));
+      }
+      if (!selectedImportance.includes('all') && selectedImportance.length === 1) {
+        if (selectedImportance[0] === 'important') {
+          filteredData = filteredData.filter(item => item.important === true);
+        } else if (selectedImportance[0] === 'notImportant') {
+          filteredData = filteredData.filter(item => item.important === false);
+        }
+      }
+
+      // Group filtered questions by week.
+      const groupedByWeek = {};
+      filteredData.forEach(q => {
+        if (!groupedByWeek[q.week]) {
+          groupedByWeek[q.week] = [];
+        }
+        groupedByWeek[q.week].push(q);
+      });
+
+      const weeks = Object.keys(groupedByWeek).sort((a, b) => a - b);
+      if (weeks.length === 0) {
+        quizSection.innerHTML = '<p>No questions match the selected filters.</p>';
+        return;
+      }
+
+      weeks.forEach(week => {
+        const weekHeading = document.createElement('h2');
+        weekHeading.textContent = 'Week ' + week;
+        quizSection.appendChild(weekHeading);
+
+        const groupedByTopic = {};
+        groupedByWeek[week].forEach(q => {
+          if (!groupedByTopic[q.topic]) {
+            groupedByTopic[q.topic] = [];
+          }
+          groupedByTopic[q.topic].push(q);
+        });
+
+        const topics = Object.keys(groupedByTopic).sort();
+        topics.forEach(topic => {
+          const topicHeading = document.createElement('h3');
+          topicHeading.textContent = topic;
+          quizSection.appendChild(topicHeading);
+
+          groupedByTopic[topic].forEach((questionObj) => {
+            totalQuestions++;
+            const currentQuestion = totalQuestions;
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question-block');
+
+            const questionText = document.createElement('p');
+            questionText.textContent = currentQuestion + '. ' + questionObj.question;
+            questionDiv.appendChild(questionText);
+
+            const answerInput = document.createElement('input');
+            answerInput.type = 'text';
+            answerInput.id = 'answer-' + currentQuestion;
+            answerInput.style.width = '80%';
+            answerInput.style.padding = '5px';
+
+            const submitBtn = document.createElement('button');
+            submitBtn.textContent = 'Submit Answer';
+
+            const answerContainer = document.createElement('div');
+            answerContainer.className = 'answer-container';
+            answerContainer.appendChild(answerInput);
+            answerContainer.appendChild(submitBtn);
+            questionDiv.appendChild(answerContainer);
+
+            submitBtn.addEventListener('click', function() {
+              checkAnswer(currentQuestion, questionObj.answer);
+              answerInput.disabled = true;
+              submitBtn.disabled = true;
+            });
+
+            const resultPara = document.createElement('p');
+            resultPara.id = 'result-' + currentQuestion;
+            resultPara.style.fontWeight = 'bold';
+            questionDiv.appendChild(resultPara);
+
+            answerInput.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                if (e.shiftKey) {
+                  showFinalScore();
+                } else {
+                  checkAnswer(currentQuestion, questionObj.answer);
+                  answerInput.disabled = true;
+                  submitBtn.disabled = true;
+                }
+              }
+            });
+
+            quizSection.appendChild(questionDiv);
+          });
+        });
+      });
+    }
+
+    // Helper: Randomly select up to num questions from an array.
+    function getRandomQuestions(arr, num) {
+      const shuffled = arr.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, Math.min(num, arr.length));
+    }
+
+    // Display the final quiz score.
+    function showFinalScore() {
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+      document.getElementById('finalScore').innerHTML =
+        '<h2>Your Score: ' + score + ' / ' + totalQuestions + '</h2>';
+    }
+  </script>
+</body>
+</html>
