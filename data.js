@@ -537,6 +537,377 @@ const data = [
         topic: "AMQP",
         important: false,
         week: 2
-      }            
+      },
+      {
+        question: "In which type of network the IEEE 802.15.4 standard is used?",
+        answer: "Low data-rate WPAN",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "State true or false\nDeveloped for low‐data‐rate monitoring and control applications and extended‐life low‐power‐consumption uses.",
+        answer: "True",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "State true or false\nDeveloped for low‐data‐rate monitoring and control applications and extended‐life high‐power‐consumption uses.",
+        answer: "False",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "IEEE 802.15.4 operates in Which frequency ranges?",
+        answer: "It operates in ISM band",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Which layers of OSI model does IEEE 802.15.4 works in?",
+        answer: "Physical and Data link layer",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which layers does IEEE 802.15.4 standard uses?",
+        answer: "PHY and MAC",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which layers does IEEE 802.15.4 uses to communicate with all upper layers?",
+        answer: "Logical link control(LLC) and service specific convergence sub-layer",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which type of modulation technique does IEEE 802.15.4 uses?",
+        answer: "Direct sequence spread spectrum (DSSS)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "IEEE 802.15.4 is highly tolerant of?",
+        answer: "noise and interference",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "State true or false?\nIEEE 802.15.4 offers link reliability improvement mechanisms",
+        answer: "True",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Low-Speed versions of IEEE 802.15.4 uses which type of digital modulation scheme?",
+        answer: "Binary Phase Shift Keying (BPSK)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "State true or false\nHigh‐speed versions of IEEE 802.15.4 use Binary Phase Shift Keying (BPSK).",
+        answer: "False",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "High-Speed versions of IEEE 802.15.4 uses which type of digital modulation scheme?",
+        answer: "Offset‐quadrature phase‐shift keying (O‐QPSK)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "State true or false\nHigh data‐rate versions use offset‐quadrature phase‐shift keying (O‐QPSK).",
+        answer: "True",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Which Carrier Sense Multiple Access(CSMA) technique does IEEE 802.15.4 uses?",
+        answer: "CSMA/CA",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "What is known as the technique allows multiple users or nodes interference‐free access to the same channel at different times?",
+        answer: "Multiplexing",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Which type of transmission path does IEEE 802.15.4 needs to work at better efficiency?",
+        answer: "Line of Sight (LOS)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Which types of network topologies IEEE 802.15.4 defined?",
+        answer: "Star and Mesh",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "What are the different types of IEEE 802.15.4 devices?",
+        answer: "FFD and RFD",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Can RFD talk with RFD?",
+        answer: "No",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Can FFD talk with FFD and RFD both?",
+        answer: "Yes",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "How many types of IEEE 802.15.4 frames exists? Which are they?",
+        answer: "5 types: Beacon MAC Command Acknowledgement Data",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "What are different types of networks IEEE 802.15.4 have?",
+        answer: "Beacon Enabled networks and Non-beacon enabled networks",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "What are the beacon messages?",
+        answer: "The message which alerts the whole network nodes.",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Beacon messages are managed by?",
+        answer: "PAN Coordinator",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "State true or false\nIn beacon enabled networks, Data‐frames sent via unslotted CSMA/CA with a super frame structure managed by PAN coordinator",
+        answer: "False",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which Carrier Sense Multiple Access(CSMA) technique does beacon enabled networks uses for data-frame transfer?",
+        answer: "Slotted CSMA/CA",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which Carrier Sense Multiple Access(CSMA) technique does non-beacon enabled networks uses for data-frame transfer?",
+        answer: "unslotted CSMA/CA",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "State true or false\nBeacons used for synchronization & association of other nodes with the coordinator",
+        answer: "True",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "What is the scope of messages in beacon enabled networks?",
+        answer: "Whole network",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Beacon enabled networks felicitates the ........... communication amongst nodes?",
+        answer: "decentralised",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "For what purpose the beacons are used?",
+        answer: "link layer discovery (Finding other device)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "IEEE 802.15.4 Primarily used which network configuration?",
+        answer: "Mesh",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Zigbee is an enhancement over which standard?",
+        answer: "IEEE 802.15.4",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Zigbee protocol is defined on which layers of OSI model?",
+        answer: "network layer and above",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Zigbee uses layer 3 and 4 to define?",
+        answer: "additional communication enhancements",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Which is most popular use case of Zigbee is?",
+        answer: "Wireless sensor networks using mesh topology",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "What are the components of Zigbee?",
+        answer: "ZDO and APS",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Zigbee commonly used for which network topology?",
+        answer: "Mesh",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Explain the work of ZDO(Zigbee Device Object)?",
+        answer: "Device management, Security, Policies",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Explain the work of APS(Application Support Sub-layer)?",
+        answer: "Interfacing and control services, bridge between network and other layers",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "What are the components of Zigbee?",
+        answer: "Zigbee Coordinator (ZC), Zigbee Router (ZR), Zigbee End Device (ZED)",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "The ........ forms the root of the ZigBee network tree and might act as a bridge between networks.",
+        answer: "Coordinator",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "There is a multiple ZigBee Coordinator in each network, which originally initiates the network.",
+        answer: "False",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Coordinator in Zigbee protocol stores information about the network .... it and ..... it.",
+        answer: "under outside",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "How coordinator in zigbee protocol acts for security keys?",
+        answer: "Trust center & repository",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "In zigbee, ........... are Capable of running applications, as well as relaying information between nodes connected to it.",
+        answer: "routers",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "In zigbee, ....... contains just enough functionality to talk to the parent node, and it cannot relay data from other devices.",
+        answer: "End device",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "In zigbee networks, end device enhances the battery life by?",
+        answer: "asleep node for significant amount of time",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "Among ZC, ZR and ZED which requires device requires less cost and memory?",
+        answer: "ZED",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: false,
+        week: 2
+      },
+      {
+        question: "Zigbee's network layer uses which algorithm for routing?",
+        answer: "Ad Hoc On‐Demand Distance Vector (AODV) routing",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "What Ad Hoc On‐Demand Distance Vector (AODV) routing calculates?",
+        answer: "low-cost path",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      },
+      {
+        question: "In zigbee network layer, How low-cost path is informed to the requesting device upon discovery of destination node/device?",
+        answer: "unicast messaging",
+        topic: "IEEE 802.15.4 & ZigBee",
+        important: true,
+        week: 2
+      }                            
   ];
   
