@@ -1,2 +1,2 @@
 MQTT
-CoAP and XAMP
+CoAP and XMPP
